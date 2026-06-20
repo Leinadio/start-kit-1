@@ -1,0 +1,26 @@
+{
+  "name": "auth-better-auth",
+  "remplitLesPrises": ["auth", "auth-client"],
+  "besoinDesPrises": ["database"],
+  "deps": ["better-auth"],
+  "env": ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"],
+  "files": ["lib/auth/server.ts", "app/api/auth/[...all]/route.ts"],
+  "branchements": [
+    {
+      "fichier": "lib/adapters/index.ts",
+      "marqueur": "adapter:auth",
+      "type": "remplacement",
+      "import": "import { betterAuthAdapter } from \"@/lib/auth/server\"",
+      "valeurInstallee": "  auth: betterAuthAdapter,",
+      "valeurParDefaut": "  auth: authStub,"
+    },
+    {
+      "fichier": "lib/auth/client.ts",
+      "marqueur": "prise:auth-client",
+      "type": "remplacement",
+      "import": "import { createAuthClient } from \"better-auth/react\"",
+      "valeurInstallee": "export const { useSession, signIn, signOut } = createAuthClient()",
+      "valeurParDefaut": "export function useSession() { return { data: null as null | { user: { email: string } }, isPending: false } }\nexport function signIn() { throw new Error(\"Aucun module d'authentification installé\") }\nexport function signOut() {}"
+    }
+  ]
+}
