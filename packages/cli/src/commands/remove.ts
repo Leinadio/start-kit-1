@@ -8,7 +8,7 @@ import {
 } from "../lib/markers"
 import { removeEnvVars } from "../lib/env"
 import { removeModuleFiles } from "../lib/fs-ops"
-import { removeDeps } from "../lib/deps"
+import { removeDeps, removeDevDeps } from "../lib/deps"
 import { installedModuleNames } from "../lib/project"
 
 export function removeModule(
@@ -39,6 +39,16 @@ export function removeModule(
     writeFileSync(path, content)
   }
 
+  const bootstrapPath = join(projectDir, "lib/bootstrap.ts")
+  if (m.listeners && m.listeners.length > 0) {
+    let bootstrap = readFileSync(bootstrapPath, "utf8")
+    for (const listener of m.listeners) {
+      bootstrap = removeLineBetweenMarkers(bootstrap, "modules", listener.call)
+      bootstrap = removeImport(bootstrap, listener.import)
+    }
+    writeFileSync(bootstrapPath, bootstrap)
+  }
+
   const envPath = join(projectDir, ".env.example")
   writeFileSync(envPath, removeEnvVars(readFileSync(envPath, "utf8"), m.env))
 
@@ -50,4 +60,5 @@ export function removeModule(
 
   removeModuleFiles(m.files, projectDir)
   if (!options.skipDeps) removeDeps(m.deps, projectDir)
+  if (!options.skipDeps) removeDevDeps(m.devDeps ?? [], projectDir)
 }

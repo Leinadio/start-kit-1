@@ -20,7 +20,7 @@
       "type": "remplacement",
       "import": "import { createAuthClient } from \"better-auth/react\"",
       "valeurInstallee": "export const { useSession, signIn, signOut } = createAuthClient()",
-      "valeurParDefaut": "export function useSession() { return { data: null as null | { user: { email: string } }, isPending: false } }\nexport function signIn() { throw new Error(\"Aucun module d'authentification installé\") }\nexport function signOut() {}"
+      "valeurParDefaut": "export function useSession() {\n  return { data: null as null | { user: { email: string } }, isPending: false }\n}\nexport function signIn() {\n  throw new Error(\"Aucun module d'authentification installé\")\n}\nexport function signOut() {}"
     }
   ]
 }

@@ -9,3 +9,13 @@ export function removeDeps(deps: string[], projectDir: string): void {
   if (deps.length === 0) return
   execSync(`pnpm remove ${deps.join(" ")}`, { cwd: projectDir, stdio: "inherit" })
 }
+
+export function installDevDeps(deps: string[], projectDir: string): void {
+  if (deps.length === 0) return
+  execSync(`pnpm add -D ${deps.join(" ")}`, { cwd: projectDir, stdio: "inherit" })
+}
+
+export function removeDevDeps(deps: string[], projectDir: string): void {
+  if (deps.length === 0) return
+  execSync(`pnpm remove ${deps.join(" ")}`, { cwd: projectDir, stdio: "inherit" })
+}

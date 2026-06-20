@@ -4,7 +4,7 @@ import { readManifest } from "../lib/manifest"
 import { replaceBetweenMarkers, insertLineBetweenMarkers, ensureImport } from "../lib/markers"
 import { addEnvVars } from "../lib/env"
 import { copyModuleFiles } from "../lib/fs-ops"
-import { installDeps } from "../lib/deps"
+import { installDeps, installDevDeps } from "../lib/deps"
 import { filledPrises, installedModuleNames } from "../lib/project"
 
 export function addModule(
@@ -42,6 +42,16 @@ export function addModule(
     writeFileSync(path, content)
   }
 
+  const bootstrapPath = join(projectDir, "lib/bootstrap.ts")
+  if (m.listeners && m.listeners.length > 0) {
+    let bootstrap = readFileSync(bootstrapPath, "utf8")
+    for (const listener of m.listeners) {
+      bootstrap = ensureImport(bootstrap, listener.import)
+      bootstrap = insertLineBetweenMarkers(bootstrap, "modules", listener.call)
+    }
+    writeFileSync(bootstrapPath, bootstrap)
+  }
+
   const envPath = join(projectDir, ".env.example")
   writeFileSync(envPath, addEnvVars(readFileSync(envPath, "utf8"), m.env))
 
@@ -54,4 +64,5 @@ export function addModule(
   }
 
   if (!options.skipDeps) installDeps(m.deps, projectDir)
+  if (!options.skipDeps) installDevDeps(m.devDeps ?? [], projectDir)
 }
