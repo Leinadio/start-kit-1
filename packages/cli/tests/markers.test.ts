@@ -54,3 +54,33 @@ describe("imports", () => {
     expect(out).not.toContain('import { x }')
   })
 })
+
+describe("idempotence", () => {
+  it("replaceBetweenMarkers est idempotent", () => {
+    const once = replaceBetweenMarkers(base, "adapter:auth", "  auth: realAuth,")
+    const twice = replaceBetweenMarkers(once, "adapter:auth", "  auth: realAuth,")
+    expect(twice).toBe(once)
+  })
+  it("removeLineBetweenMarkers est un no-op si la ligne est absente", () => {
+    const out = removeLineBetweenMarkers(list, "modules", "  registerX()")
+    expect(out).toBe(list)
+  })
+  it("removeImport est un no-op si l'import est absent", () => {
+    const out = removeImport(base, 'import { x } from "y"')
+    expect(out).toBe(base)
+  })
+})
+
+describe("marqueurs absents ou malformes", () => {
+  it("leve une erreur quand le marqueur est introuvable", () => {
+    expect(() => replaceBetweenMarkers(base, "inexistant", "x")).toThrow(
+      /Marqueurs introuvables/,
+    )
+  })
+  it("leve une erreur quand end precede start", () => {
+    const malformed = `// @bloc end\n// @bloc start\n`
+    expect(() => insertLineBetweenMarkers(malformed, "bloc", "x")).toThrow(
+      /Marqueurs introuvables/,
+    )
+  })
+})
