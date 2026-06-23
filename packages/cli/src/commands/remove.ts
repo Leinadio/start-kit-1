@@ -20,22 +20,22 @@ export function removeModule(
   const m = readManifest(join(modulesRoot, name))
 
   const others = installedModuleNames(projectDir).filter((n) => n !== name)
-  const stillNeeded = others.flatMap((n) => readManifest(join(modulesRoot, n)).besoinDesPrises)
-  for (const slot of m.remplitLesPrises) {
+  const stillNeeded = others.flatMap((n) => readManifest(join(modulesRoot, n)).requires)
+  for (const slot of m.provides) {
     if (stillNeeded.includes(slot)) {
       throw new Error(`Impossible, un autre module a encore besoin de la prise ${slot}.`)
     }
   }
 
-  for (const b of m.branchements) {
-    const path = join(projectDir, b.fichier)
+  for (const w of m.wiring) {
+    const path = join(projectDir, w.file)
     let content = readFileSync(path, "utf8")
-    if (b.type === "remplacement") {
-      content = replaceBetweenMarkers(content, b.marqueur, b.valeurParDefaut ?? "")
+    if (w.type === "replace") {
+      content = replaceBetweenMarkers(content, w.marker, w.defaultValue ?? "")
     } else {
-      content = removeLineBetweenMarkers(content, b.marqueur, b.valeurInstallee)
+      content = removeLineBetweenMarkers(content, w.marker, w.installedValue)
     }
-    if (b.import) content = removeImport(content, b.import)
+    if (w.import) content = removeImport(content, w.import)
     writeFileSync(path, content)
   }
 

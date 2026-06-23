@@ -1,0 +1,19 @@
+{
+  "name": "database-supabase",
+  "provides": ["database"],
+  "requires": [],
+  "deps": ["@prisma/client"],
+  "devDeps": ["prisma"],
+  "env": ["DATABASE_URL", "DIRECT_URL"],
+  "files": ["lib/database/client.ts", "prisma/schema.prisma"],
+  "wiring": [
+    {
+      "file": "lib/adapters/index.ts",
+      "marker": "adapter:database",
+      "type": "replace",
+      "import": "import { prismaDatabaseAdapter } from \"@/lib/database/client\"",
+      "installedValue": "  database: prismaDatabaseAdapter,",
+      "defaultValue": "  database: databaseStub,"
+    }
+  ]
+}

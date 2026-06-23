@@ -1,26 +1,25 @@
 {
   "name": "auth-better-auth",
-  "remplitLesPrises": ["auth", "auth-client"],
-  "besoinDesPrises": ["database"],
+  "provides": ["auth", "auth-client"],
+  "requires": ["database"],
   "deps": ["better-auth"],
   "env": ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL"],
-  "files": ["lib/auth/server.ts", "app/api/auth/[...all]/route.ts"],
-  "branchements": [
+  "files": ["lib/auth/server.ts", "lib/auth/client-adapter.ts", "app/api/auth/[...all]/route.ts"],
+  "wiring": [
     {
-      "fichier": "lib/adapters/index.ts",
-      "marqueur": "adapter:auth",
-      "type": "remplacement",
+      "file": "lib/adapters/index.ts",
+      "marker": "adapter:auth",
+      "type": "replace",
       "import": "import { betterAuthAdapter } from \"@/lib/auth/server\"",
-      "valeurInstallee": "  auth: betterAuthAdapter,",
-      "valeurParDefaut": "  auth: authStub,"
+      "installedValue": "  auth: betterAuthAdapter,",
+      "defaultValue": "  auth: authStub,"
     },
     {
-      "fichier": "lib/auth/client.ts",
-      "marqueur": "prise:auth-client",
-      "type": "remplacement",
-      "import": "import { createAuthClient } from \"better-auth/react\"",
-      "valeurInstallee": "export const { useSession, signIn, signOut } = createAuthClient()",
-      "valeurParDefaut": "export function useSession() {\n  return { data: null as null | { user: { email: string } }, isPending: false }\n}\nexport function signIn() {\n  throw new Error(\"Aucun module d'authentification installé\")\n}\nexport function signOut() {}"
+      "file": "lib/auth/client.ts",
+      "marker": "prise:auth-client",
+      "type": "replace",
+      "installedValue": "export * from \"./client-adapter\"",
+      "defaultValue": "export * from \"./client-stub\""
     }
   ]
 }

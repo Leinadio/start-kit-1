@@ -6,6 +6,7 @@
     "dev": "pnpm --filter @starter/base dev",
     "build": "pnpm --filter @starter/base build",
     "cli:build": "pnpm --filter @starter/cli build",
+    "starter": "cd base && node ../packages/cli/dist/index.cjs",
     "test": "pnpm --filter @starter/cli test"
   }
 }

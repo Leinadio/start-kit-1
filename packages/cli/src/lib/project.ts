@@ -10,5 +10,5 @@ export function installedModuleNames(projectDir: string): string[] {
 
 export function filledPrises(projectDir: string, modulesRoot: string): string[] {
   const names = installedModuleNames(projectDir)
-  return names.flatMap((n) => readManifest(join(modulesRoot, n)).remplitLesPrises)
+  return names.flatMap((n) => readManifest(join(modulesRoot, n)).provides)
 }

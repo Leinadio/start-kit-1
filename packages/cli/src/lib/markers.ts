@@ -30,6 +30,13 @@ export function removeLineBetweenMarkers(content: string, marker: string, line: 
 
 export function ensureImport(content: string, importLine: string): string {
   if (content.includes(importLine)) return content
+  const lines = content.split("\n")
+  // A "use client" / "use server" directive must stay the first line of the
+  // file, so insert the import right after it instead of above it.
+  const isDirective = /^\s*["']use (client|server)["'];?\s*$/
+  if (lines.length > 0 && isDirective.test(lines[0])) {
+    return [lines[0], importLine, ...lines.slice(1)].join("\n")
+  }
   return `${importLine}\n${content}`
 }
 

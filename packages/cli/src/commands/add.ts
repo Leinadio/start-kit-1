@@ -17,12 +17,12 @@ export function addModule(
   const m = readManifest(moduleDir)
   const filled = filledPrises(projectDir, modulesRoot)
 
-  for (const need of m.besoinDesPrises) {
+  for (const need of m.requires) {
     if (!filled.includes(need)) {
       throw new Error(`Installe d'abord un module pour la prise ${need}`)
     }
   }
-  for (const slot of m.remplitLesPrises) {
+  for (const slot of m.provides) {
     if (filled.includes(slot)) {
       throw new Error(`La prise ${slot} est déjà occupée. Retire l'autre module d'abord.`)
     }
@@ -30,14 +30,14 @@ export function addModule(
 
   copyModuleFiles(moduleDir, m.files, projectDir)
 
-  for (const b of m.branchements) {
-    const path = join(projectDir, b.fichier)
+  for (const w of m.wiring) {
+    const path = join(projectDir, w.file)
     let content = readFileSync(path, "utf8")
-    if (b.import) content = ensureImport(content, b.import)
-    if (b.type === "remplacement") {
-      content = replaceBetweenMarkers(content, b.marqueur, b.valeurInstallee)
+    if (w.import) content = ensureImport(content, w.import)
+    if (w.type === "replace") {
+      content = replaceBetweenMarkers(content, w.marker, w.installedValue)
     } else {
-      content = insertLineBetweenMarkers(content, b.marqueur, b.valeurInstallee)
+      content = insertLineBetweenMarkers(content, w.marker, w.installedValue)
     }
     writeFileSync(path, content)
   }

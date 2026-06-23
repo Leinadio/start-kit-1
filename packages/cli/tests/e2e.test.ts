@@ -20,6 +20,7 @@ const SNAPSHOT_FILES = [
 const COPIED_FILES = [
   "lib/database/client.ts",
   "lib/auth/server.ts",
+  "lib/auth/client-adapter.ts",
   "app/api/auth/[...all]/route.ts",
 ]
 
@@ -48,7 +49,7 @@ describe("flux add et remove", () => {
   it("installe database puis auth, puis vérifie le registre", async () => {
     const { addModule } = await import("../src/commands/add")
 
-    addModule("database", tmp, modulesRoot, { skipDeps: true })
+    addModule("database-supabase", tmp, modulesRoot, { skipDeps: true })
     addModule("auth-better-auth", tmp, modulesRoot, { skipDeps: true })
 
     const registry = readFileSync(join(tmp, "lib/adapters/index.ts"), "utf8")
@@ -56,7 +57,7 @@ describe("flux add et remove", () => {
     expect(registry).toContain("prismaDatabaseAdapter")
 
     const list = readFileSync(join(tmp, "lib/installed-modules.ts"), "utf8")
-    expect(list).toContain('"database"')
+    expect(list).toContain('"database-supabase"')
     expect(list).toContain('"auth-better-auth"')
 
     // Copied module files must exist after install
@@ -69,7 +70,7 @@ describe("flux add et remove", () => {
     const { removeModule } = await import("../src/commands/remove")
 
     removeModule("auth-better-auth", tmp, modulesRoot, { skipDeps: true })
-    removeModule("database", tmp, modulesRoot, { skipDeps: true })
+    removeModule("database-supabase", tmp, modulesRoot, { skipDeps: true })
 
     const registry = readFileSync(join(tmp, "lib/adapters/index.ts"), "utf8")
     expect(registry).toContain("auth: authStub,")

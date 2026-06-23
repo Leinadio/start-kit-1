@@ -1,13 +1,13 @@
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
 
-export interface Branchement {
-  fichier: string
-  marqueur: string
-  type: "remplacement" | "ligne"
+export interface Wiring {
+  file: string
+  marker: string
+  type: "replace" | "line"
   import?: string
-  valeurInstallee: string
-  valeurParDefaut?: string
+  installedValue: string
+  defaultValue?: string
 }
 
 /**
@@ -23,13 +23,13 @@ export interface Listener {
 
 export interface ModuleManifest {
   name: string
-  remplitLesPrises: string[]
-  besoinDesPrises: string[]
+  provides: string[]
+  requires: string[]
   deps: string[]
   devDeps?: string[]
   env: string[]
   files: string[]
-  branchements: Branchement[]
+  wiring: Wiring[]
   /** Optional event-bus listener hooks to wire into base/lib/bootstrap.ts */
   listeners?: Listener[]
 }
@@ -37,15 +37,15 @@ export interface ModuleManifest {
 export function readManifest(moduleDir: string): ModuleManifest {
   const raw = readFileSync(join(moduleDir, "module.json"), "utf8")
   const m = JSON.parse(raw) as ModuleManifest
-  if (!m.name || !Array.isArray(m.remplitLesPrises)) {
+  if (!m.name || !Array.isArray(m.provides)) {
     throw new Error(`Fiche invalide dans ${moduleDir}`)
   }
-  for (const b of m.branchements ?? []) {
-    if (b.valeurInstallee === undefined || b.valeurInstallee === null) {
-      throw new Error(`Fiche invalide dans ${moduleDir}: branchement "${b.marqueur}" manque valeurInstallee`)
+  for (const w of m.wiring ?? []) {
+    if (w.installedValue === undefined || w.installedValue === null) {
+      throw new Error(`Fiche invalide dans ${moduleDir}: branchement "${w.marker}" manque installedValue`)
     }
-    if (b.type === "remplacement" && b.valeurParDefaut === undefined) {
-      throw new Error(`Fiche invalide dans ${moduleDir}: branchement "${b.marqueur}" de type remplacement manque valeurParDefaut`)
+    if (w.type === "replace" && w.defaultValue === undefined) {
+      throw new Error(`Fiche invalide dans ${moduleDir}: branchement "${w.marker}" de type replace manque defaultValue`)
     }
   }
   return m

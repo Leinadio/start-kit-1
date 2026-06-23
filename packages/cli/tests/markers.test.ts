@@ -53,6 +53,14 @@ describe("imports", () => {
     out = removeImport(out, imp)
     expect(out).not.toContain('import { x }')
   })
+
+  it("insère l'import après une directive \"use client\"", () => {
+    const file = '"use client"\nexport function f() {}'
+    const out = ensureImport(file, 'import { x } from "y"')
+    const lines = out.split("\n")
+    expect(lines[0]).toBe('"use client"')
+    expect(lines[1]).toBe('import { x } from "y"')
+  })
 })
 
 describe("idempotence", () => {
