@@ -1,9 +1,10 @@
 "use client"
+import type { AuthClient } from "@/lib/auth/types"
 
-export function useSession() {
-  return { data: null as null | { user: { email: string } }, isPending: false }
+export const useSession: AuthClient["useSession"] = () => {
+  return { data: null, isPending: false }
 }
-export function signIn() {
+export const signIn: AuthClient["signIn"] = () => {
   throw new Error("Aucun module d'authentification installé")
 }
-export function signOut() {}
+export const signOut: AuthClient["signOut"] = () => {}
