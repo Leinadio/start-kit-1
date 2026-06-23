@@ -60,6 +60,12 @@ describe("flux add et remove", () => {
     expect(list).toContain('"database-supabase"')
     expect(list).toContain('"auth-better-auth"')
 
+    const envAfter = readFileSync(join(tmp, ".env.example"), "utf8")
+    expect(envAfter).toContain("GOOGLE_CLIENT_ID")
+    expect(envAfter).toContain("GOOGLE_CLIENT_SECRET")
+    expect(envAfter).toContain("LINKEDIN_CLIENT_ID")
+    expect(envAfter).toContain("LINKEDIN_CLIENT_SECRET")
+
     // Copied module files must exist after install
     for (const file of COPIED_FILES) {
       expect(existsSync(join(tmp, file)), `${file} should exist after add`).toBe(true)
