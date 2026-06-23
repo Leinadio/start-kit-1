@@ -27,7 +27,7 @@ export interface AnalyticsAdapter {
 export interface Adapters {
   auth: AuthAdapter
   database: DatabaseAdapter
-  payment: PaymentAdapter | null
+  payment: PaymentAdapter
   email: EmailAdapter
   analytics: AnalyticsAdapter
 }
