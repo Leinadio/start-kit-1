@@ -9,7 +9,15 @@ const authClient = createAuthClient()
 export const useSession: AuthClient["useSession"] = () => {
   const session = authClient.useSession()
   return {
-    data: session.data ? { user: { email: session.data.user.email } } : null,
+    data: session.data
+      ? {
+          user: {
+            email: session.data.user.email,
+            name: session.data.user.name,
+            image: session.data.user.image ?? null,
+          },
+        }
+      : null,
     isPending: session.isPending,
   }
 }
@@ -31,4 +39,24 @@ export const signUpEmail: AuthClient["signUpEmail"] = async ({ email, password, 
 
 export const signOut: AuthClient["signOut"] = () => {
   return authClient.signOut()
+}
+
+export const updateProfile: AuthClient["updateProfile"] = async ({ name, image }) => {
+  const { error } = await authClient.updateUser({ name, image })
+  if (error) throw new Error(error.message ?? "Mise à jour du profil impossible")
+}
+
+export const changeEmail: AuthClient["changeEmail"] = async ({ newEmail }) => {
+  const { error } = await authClient.changeEmail({ newEmail, callbackURL: "/dashboard/compte" })
+  if (error) throw new Error(error.message ?? "Changement d'email impossible")
+}
+
+export const changePassword: AuthClient["changePassword"] = async ({ currentPassword, newPassword }) => {
+  const { error } = await authClient.changePassword({ currentPassword, newPassword })
+  if (error) throw new Error(error.message ?? "Changement de mot de passe impossible")
+}
+
+export const deleteAccount: AuthClient["deleteAccount"] = async () => {
+  const { error } = await authClient.deleteUser()
+  if (error) throw new Error(error.message ?? "Suppression du compte impossible")
 }

@@ -17,6 +17,10 @@ export const auth = betterAuth({
       clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
     },
   },
+  user: {
+    changeEmail: { enabled: true },
+    deleteUser: { enabled: true },
+  },
 })
 
 export const betterAuthAdapter: AuthAdapter = {
