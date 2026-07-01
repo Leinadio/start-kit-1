@@ -32,4 +32,9 @@ describe("DataTable", () => {
     render(<DataTable columns={columns} data={[]} emptyMessage="Aucune facture" />)
     expect(screen.getByText("Aucune facture")).toBeInTheDocument()
   })
+
+  it("affiche le message vide par défaut quand aucun message n'est fourni", () => {
+    render(<DataTable columns={columns} data={[]} />)
+    expect(screen.getByText("Rien à afficher pour l'instant.")).toBeInTheDocument()
+  })
 })

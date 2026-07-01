@@ -31,16 +31,16 @@ export function DataTable<T extends { id: string | number }>({
     <Table>
       <TableHeader>
         <TableRow>
-          {columns.map((col) => (
-            <TableHead key={col.key}>{col.header}</TableHead>
+          {columns.map((col, i) => (
+            <TableHead key={i}>{col.header}</TableHead>
           ))}
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.map((row) => (
           <TableRow key={row.id}>
-            {columns.map((col) => (
-              <TableCell key={col.key}>
+            {columns.map((col, i) => (
+              <TableCell key={i}>
                 {col.render
                   ? col.render(row)
                   : String((row as Record<string, unknown>)[col.key] ?? "")}
