@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { describe, it, expect, vi } from "vitest"
 
 const updateProfile = vi.fn().mockResolvedValue(undefined)
+vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }))
 vi.mock("@/lib/auth/client", () => ({
   useSession: () => ({ data: { user: { email: "jean@exemple.fr", name: "Jean" } }, isPending: false }),
   updateProfile: (...args: unknown[]) => updateProfile(...args),
@@ -20,5 +21,6 @@ describe("ProfileForm", () => {
     await user.type(input, "Jeanne")
     await user.click(screen.getByRole("button", { name: /enregistrer/i }))
     expect(updateProfile).toHaveBeenCalledWith({ name: "Jeanne" })
+    expect(await screen.findByText("Profil mis à jour.")).toBeInTheDocument()
   })
 })

@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { deleteAccount } from "@/lib/auth/client"
+import { deleteAccount, signOut } from "@/lib/auth/client"
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
@@ -28,10 +28,11 @@ export function DeleteAccount() {
     setLoading(true)
     try {
       await deleteAccount()
-      setOpen(false)
+      await signOut()
       router.push("/")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur")
+    } finally {
       setLoading(false)
     }
   }

@@ -45,7 +45,7 @@ export function EmailForm() {
         />
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      {success ? <p className="text-sm text-muted-foreground">Email mis à jour.</p> : null}
+      {success ? <p className="text-sm text-muted-foreground">Vérifiez votre boîte mail pour confirmer.</p> : null}
       <Button type="submit" disabled={saving}>
         {saving ? "Enregistrement…" : "Changer l'email"}
       </Button>

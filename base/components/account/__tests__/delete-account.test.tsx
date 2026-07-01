@@ -20,4 +20,13 @@ describe("DeleteAccount", () => {
     await user.click(await screen.findByRole("button", { name: /confirmer/i }))
     expect(deleteAccount).toHaveBeenCalled()
   })
+
+  it("n'appelle pas deleteAccount quand l'utilisateur annule", async () => {
+    deleteAccount.mockClear()
+    const user = userEvent.setup()
+    render(<DeleteAccount />)
+    await user.click(screen.getByRole("button", { name: /supprimer mon compte/i }))
+    await user.click(await screen.findByRole("button", { name: /annuler/i }))
+    expect(deleteAccount).not.toHaveBeenCalled()
+  })
 })
