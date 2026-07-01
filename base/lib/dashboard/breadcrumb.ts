@@ -16,7 +16,7 @@ export function buildBreadcrumb(pathname: string): Crumb[] {
     href += `/${segment}`
     if (href === "/dashboard") {
       crumbs.push({ label: "Accueil", href })
-    } else if (segment !== "dashboard") {
+    } else {
       crumbs.push({ label: labelFor(href, segment), href })
     }
   }
