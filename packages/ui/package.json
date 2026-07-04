@@ -29,6 +29,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5",
+    "@vitest/expect": "^3",
     "jsdom": "^26",
     "tailwindcss": "^4",
     "typescript": "^5",
