@@ -1,5 +1,5 @@
 import { adapters } from "@/lib/adapters"
-import { SignOutButton } from "./sign-out-button"
+import { SignOutButton } from "@/components/auth/sign-out-button"
 
 export default async function Home() {
   const session = await adapters.auth.getSession()

@@ -30,9 +30,11 @@ export function UserMenu() {
           <AvatarFallback>{initial}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{email}</DropdownMenuLabel>
+          <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+            {email}
+          </DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>Se déconnecter</DropdownMenuItem>

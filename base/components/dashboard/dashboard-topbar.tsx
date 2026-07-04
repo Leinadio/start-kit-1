@@ -22,7 +22,7 @@ export function DashboardTopbar() {
   return (
     <header className="flex h-14 items-center gap-3 border-b px-4">
       <SidebarTrigger />
-      <Separator orientation="vertical" className="h-6" />
+      <Separator orientation="vertical" className="data-vertical:h-6 data-vertical:self-center" />
       <Breadcrumb>
         <BreadcrumbList>
           {crumbs.map((crumb, index) => {
