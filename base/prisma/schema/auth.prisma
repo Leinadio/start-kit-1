@@ -1,11 +1,6 @@
-
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-}
+// Tables du module auth-better-auth.
+// Ce fichier est apporté par le module auth : l'installer dépose ces tables,
+// le désinstaller les retire. Prisma fusionne tous les fichiers du dossier.
 
 model User {
   id            String    @id

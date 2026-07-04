@@ -4,7 +4,7 @@
   "requires": ["database"],
   "deps": ["better-auth"],
   "env": ["BETTER_AUTH_SECRET", "BETTER_AUTH_URL", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET", "LINKEDIN_CLIENT_ID", "LINKEDIN_CLIENT_SECRET"],
-  "files": ["lib/auth/server.ts", "lib/auth/client-adapter.ts", "app/api/auth/[...all]/route.ts"],
+  "files": ["lib/auth/server.ts", "lib/auth/client-adapter.ts", "app/api/auth/[...all]/route.ts", "prisma/schema/auth.prisma"],
   "wiring": [
     {
       "file": "lib/adapters/index.ts",

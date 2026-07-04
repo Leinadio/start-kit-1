@@ -5,7 +5,7 @@
   "deps": ["@prisma/client"],
   "devDeps": ["prisma"],
   "env": ["DATABASE_URL", "DIRECT_URL"],
-  "files": ["lib/database/client.ts", "prisma/schema.prisma"],
+  "files": ["lib/database/client.ts", "prisma/schema/schema.prisma"],
   "wiring": [
     {
       "file": "lib/adapters/index.ts",
